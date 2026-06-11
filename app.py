@@ -54,44 +54,4 @@ def evaluate_churn(customer: Customer):
         "churn_probability": round(prob * 100, 2)
     }
 
-from typing import List
 
-class BulkCustomer(Customer):
-    customer_id: int
-
-@app.post("/bulk-churn-check")
-def bulk_churn_check(customers: List[BulkCustomer]):
-
-    results = []
-
-    for customer in customers:
-
-        country = country_encoder.transform([customer.country])[0]
-        gender = gender_encoder.transform([customer.gender])[0]
-
-        data = pd.DataFrame([{
-            "credit_score": customer.credit_score,
-            "country": country,
-            "gender": gender,
-            "age": customer.age,
-            "tenure": customer.tenure,
-            "balance": customer.balance,
-            "products_number": customer.products_number,
-            "credit_card": customer.credit_card,
-            "active_member": customer.active_member,
-            "estimated_salary": customer.estimated_salary
-        }])
-
-        prob = model.predict_proba(data)[0][1]
-
-        results.append({
-            "customer_id": customer.customer_id,
-            "risk": round(prob * 100, 2)
-        })
-
-    results.sort(
-        key=lambda x: x["risk"],
-        reverse=True
-    )
-
-    return results
