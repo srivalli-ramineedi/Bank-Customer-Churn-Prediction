@@ -3,7 +3,7 @@ from pydantic import BaseModel
 import pandas as pd
 import joblib
 
-from fastapi.responces import RedirectResponse
+from fastapi.responses import RedirectResponse
 
 app = FastAPI()
 model = joblib.load("models/churn pridiction results.pkl")
