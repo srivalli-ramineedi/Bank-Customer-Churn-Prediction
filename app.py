@@ -3,6 +3,8 @@ from pydantic import BaseModel
 import pandas as pd
 import joblib
 
+from fastapi.responces import RedirectResponse
+
 app = FastAPI()
 model = joblib.load("models/churn pridiction results.pkl")
 country_encoder = joblib.load("models/country_encoder.pkl")
